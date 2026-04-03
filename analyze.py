@@ -18,12 +18,18 @@ if not api_key:
     raise ValueError("GROQ_API_KEY environment variable is not set. Please create a .env file with your API key.")
 
 
+class Attraction(BaseModel):
+    """Schema for a single attraction"""
+    name: str = Field(description="Name of the attraction")
+    description: str = Field(description="Brief description of the attraction")
+
+
 class TravelItinerary(BaseModel):
     """Schema for travel itinerary response"""
     destination: str = Field(description="The destination name")
     price_range: str = Field(description="Expected price range (e.g., '$', '$$', '$$$')")
     ideal_visit_times: List[str] = Field(description="Best times to visit (e.g., seasons or months)")
-    top_attractions: List[str] = Field(description="List of top attractions to visit")
+    top_attractions: List[Attraction] = Field(description="List of top attractions with their descriptions")
 
 
 def get_itinerary(destination: str) -> Dict[str, Any]:
@@ -39,9 +45,17 @@ def get_itinerary(destination: str) -> Dict[str, Any]:
 
 Return your response as a JSON object with the following structure:
 - destination: the destination name
-- price_range: expected price range (use $, $$, or $$$)
+- price_range: expected price range (use $, $$, $$$ or $$$$)
 - ideal_visit_times: array of best times to visit (seasons or months)
-- top_attractions: array of top attractions to visit
+- top_attractions: array of objects, each with:
+  - name: the name of the attraction
+  - description: a brief description of the attraction
+
+Example format for top_attractions:
+[
+  {{"name": "Attraction Name", "description": "Brief description"}},
+  {{"name": "Another Attraction", "description": "Another description"}}
+]
 
 Respond with ONLY valid JSON, no additional text."""
 

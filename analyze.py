@@ -49,7 +49,7 @@ Return your response as a JSON object with the following structure:
 - ideal_visit_times: array of best times to visit (seasons or months)
 - top_attractions: array of objects, each with:
   - name: the name of the attraction
-  - description: a brief description of the attraction
+  - description: a brief description of the attraction, always in Spanish
 
 Example format for top_attractions:
 [
@@ -63,7 +63,7 @@ Respond with ONLY valid JSON, no additional text."""
     response = completion(
         model=MODEL,
         messages=[
-            {"role": "system", "content": "You are a helpful travel advisor. Always respond with valid JSON."},
+            {"role": "system", "content": "You are a helpful travel advisor. Always respond with valid JSON according to the specified schema."},
             {"role": "user", "content": prompt}
         ],
         api_key=api_key,
